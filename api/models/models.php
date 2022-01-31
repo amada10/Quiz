@@ -1,9 +1,9 @@
 <?php
 abstract class Database {
-    private $host = 'localhost';
-    private $database = 'quiz';
-    private $user = 'jitiy';
-    private $password = '01Lah_tr*@ro0t';
+    private $host = process.env.HOST;
+    private $database = process.env.DB_NAME;
+    private $user = process.env.DB_USER;
+    private $password = process.env.DB_PASSWORD;
 
     protected function db_connect():object {
         try {
