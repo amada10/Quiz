@@ -376,3 +376,99 @@ class Question extends Database {
         $database = null;
     }
 }
+
+class Reponse extends Database {
+
+    public function getAllReponses():array {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> query('SELECT R.ID, R.REPONSE, R.ID_QUESTION, Q.ENONCE
+                FROM REPONSE R
+                JOIN QUESTION Q ON R.ID_QUESTION = Q.ID
+            ');
+            $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
+            $demande -> closeCursor();
+            return $reponses;
+        }
+        catch(PDOException $e) {
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse Tout' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function getReponses(array $donnees):array {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('SELECT R.ID, R.REPONSE, R.ID_QUESTION, Q.ENONCE
+                FROM REPONSE R
+                JOIN QUESTION Q ON R.ID_QUESTION = Q.ID
+                WHERE Q.ID = :identifiant
+            ');
+        }
+        catch(PDOException $e) {
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function addReponses(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('INSERT INTO REPONSE (REPONSE, ID_QUESTION)
+                VALUES(:reponse, :identifiant)
+            ');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Reponse' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function updataReponses(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('UPDATE REPONSE 
+                SET REPONSE = :reponse, ID_QUESTION = :identifiant
+            ');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu mettre à jour 'Reponse' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function deleteReponses(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('DELETE FROM REPONSE WHERE ID = :identifiant');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu supprimer 'Reponse' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+}
