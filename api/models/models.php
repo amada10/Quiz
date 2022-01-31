@@ -147,6 +147,7 @@ class Users extends Database {
             $database = Database::db_connect();
             $demande = $database -> prepare('UPDATE USERS 
                 SET SCORE = :score
+                WHERE ID = :identifiant
             ');
             $demande -> execute($donnees);
             $database -> commit();
@@ -234,7 +235,7 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Users' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Descriptions' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -254,7 +255,7 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu mettre à jour 'Users' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu mettre à jour 'Descriptions' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -271,7 +272,105 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu supprimer 'Users' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu supprimer 'Descriptions' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+}
+
+class Question extends Database {
+    public function getAllQuestions():array {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> query('SELECT ID, ENONCE
+                FROM QUESTION
+            ');
+            $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
+            $demande -> closeCursor();
+            return $reponses;
+        }
+        catch(PDOException $e) {
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Questions Tout' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function getQuestions(array $donnees): array {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('SELECT ID, ENONCE
+                FROM QUESTION
+                WHERE ID = :identifiant
+            ');
+            $demande -> execute($donnees);
+            $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
+            $demande -> closeCursor();
+            return $reponses;
+        }
+        catch(PDOException $e) {
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Questions' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function addQuestions(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('INSERT INTO QUESTION(ENONCE)
+                VALUES(:enonce)
+            ');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas ajouter dans 'Question' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function updateQuestions(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('UPDATE QUESTION 
+                SET ENONCE = :enonce 
+                WHERE ID = :identifiant
+            ');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu mettre à jour dans 'Question' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function deleteQuestions(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('DELETE FROM QUESTION WHERE ID = :identifiant');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu supprimer dans 'Question' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
