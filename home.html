@@ -13,6 +13,16 @@
 			<link href="assets/fontawesome/css/all.css" rel="stylesheet">
 			<link href="assets/fontawesome/css/fontawesome.css" rel="stylesheet">
 
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+			<script>
+				$(document).click(function() {             
+						$('#loginModal').modal('show');
+						$(function () {
+						$('[data-toggle="tooltip"]').tooltip()
+					})
+				});
+			</script>
 		</head>
 		<body>
 
@@ -34,11 +44,37 @@
 							<input type="submit" name="commencer" value="Start">
 						</div>					</div>
 					<div class="content content-right ">
-						<button class="bouton-admin"><a href="views/admin.html"><i class="fas fa-user-shield" title="Admin section"></i></a></button>
+						<button class="bouton-admin" data-toggle="modal" data-target="#loginModal"><i class="fas fa-user-shield" title="Admin section"></i></button>
 					</div>
 				</div>
 			</div>
 
+			<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header border-bottom-0">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-title text-center">
+								<h4>Login Admin</h4>
+							</div>
+							<div class="d-flex flex-column text-center">
+								<form>
+									<div class="form-group">
+										<input type="email" class="form-control" id="email1"placeholder="Pseudo admin...">
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" id="password1" placeholder="Password admin...">
+									</div>
+									<button type="button" class="btn btn-info btn-block btn-round"><a href="views/admin.html" style="color: white; text-decorationo: none;">Login</a></button>
+								</form>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<script src="assets/jquery/jquery.min.js"></script>
 			<script src="assets/bootstrap/js/bootstrap.js"></script>
