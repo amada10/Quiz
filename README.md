@@ -1,6 +1,6 @@
 # Quiz
 - ### Prendre la liste des utilisateurs: 
-    - *http(s)://**nom_domaine**/api/index.php?demande=get/user/.*
+    - *http(s)://**nom_domaine**/api/index.php?demande=get/users/.*
 - ### Prendre la liste des groupeQuest: 
     - *http(s)://**nom_domaine**/api/index.php?demande=get/groupe-questions/.*
 - ### Prendre la liste des questions: 
