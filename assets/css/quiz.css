@@ -1,0 +1,24 @@
+body{
+    background-color: rgb(110, 227, 217);
+}
+
+.principal{
+    width: 75%;
+    height: 550px;
+    background-color: rgb(208, 247, 242);
+    margin: 20px auto;
+    box-shadow: 7px 5px 20px #5e5e61;
+    border-radius: 30px;
+}
+
+.num_question{
+
+}
+
+.enonce{
+
+}
+
+.choix{
+    
+}
