@@ -1,0 +1,56 @@
+.content{
+	height: 602px;
+}
+
+.conteneur{
+	display: flex;
+	flex-direction: row;
+}
+
+.content-left{
+	background-color: #418a71;
+	border: 1px solid #418a71;
+	flex: 2;
+} 
+
+.logo{
+	margin: 0px 60px;
+}
+.txt_bienvenue{
+	text-align: center;
+	color: white;
+	margin: 5px 20px;
+}
+.bouton input{
+	width: 160px;
+	height: 50px;
+	background-color: transparent;
+	border: 2px solid white;
+	color: white;
+	margin: 10px 130px;
+}
+.bouton input:hover{
+	background-color: white;
+	color: #418a71;
+	border-color: #418a71;
+}
+
+.content-right{
+	background: url("../img/boite.gif") fixed no-repeat 700px 110px;
+	background-size: inherit;
+	flex: 4;
+	background-color: #97dcdf;
+	padding: 10px 20px;
+}
+
+/*Icone*/
+.fa-user-shield{
+	background-color: none;
+	font-size: 70px;
+}
+.bouton-admin{
+	background-color: #97dcdf;
+	border: none;
+	float: right;
+	clear: both;
+}

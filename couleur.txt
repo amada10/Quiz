@@ -1,0 +1,18 @@
+page quiz
+bleu background :  rgb (110, 227, 217);
+
+bleu avant plan rgb(208, 247, 242)
+
+page accueil
+couleur vert : rgb(65, 138, 113) = #418a71
+
+border vert bouton : #6cc5a5
+
+blue sur le texte: 
+#262d49
+
+rouge sur le texte:
+ #90263c
+
+
+
