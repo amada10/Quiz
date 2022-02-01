@@ -3,6 +3,8 @@ bleu background :  rgb (110, 227, 217);
 
 bleu avant plan rgb(208, 247, 242)
 
+bleu choix #13d7d6
+
 page accueil
 couleur vert : rgb(65, 138, 113) = #418a71
 
