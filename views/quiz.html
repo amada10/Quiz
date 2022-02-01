@@ -4,52 +4,87 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Quizz-eo</title>
-	<link rel="stylesheet" type="text/css" href="">
 
  	<!--bootstrap et jquery-->
 	  <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 	  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
 	  <link rel="stylesheet" href="../assets/css/quiz.css">
-	  <link href="assets/icofont/icofont.min.css" rel="stylesheet">
-	  <link href="assets/boxicons/css/boxicons.min.css" rel="stylesheet">
-	  <link href="assets/fontawesome/css/all.css" rel="stylesheet">
-	  <link href="assets/fontawesome/css/fontawesome.css" rel="stylesheet">
+	  <link href="../assets/icofont/icofont.min.css" rel="stylesheet">
+	  <link href="../assets/boxicons/css/boxicons.min.css" rel="stylesheet">
+	  <link href="../assets/fontawesome/css/all.css" rel="stylesheet">
+	  <link href="../assets/fontawesome/css/fontawesome.css" rel="stylesheet">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 </head>
 <body>
 
-<div class="container">
+<div class="conteneur">
 	<div class="principal">
-		<h4 class="num_question">
-			Qustion n° 1
-		</h4>
-		<div class="enonce">
-			<p>
-				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime vero nemo a eveniet atque 
-				dolorem recusandae, odio porro, assumenda eos modi eligendi repudiandae odit fugiat explicabo 
-				uga ab temporibus quibusdam.
-			</p>
-		</div>
-		<div class="choix">
-			<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
-			<label class="btn btn-outline-primary" for="choix1">20 %</label>
+		<form method="" action="">
+			<h2 class="num_question">
+				<b>Question n° 1</b>
+			</h2>
 
-			<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
-			<label class="btn btn-outline-primary" for="choix2">50 %</label>
+			<div class="enonce">
+				<p>
+					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime vero nemo a eveniet atque 
+					dolorem recusandae, odio porro, assumenda eos modi eligendi repudiandae odit fugiat explicabo 
+					uga ab temporibus quibusdam.
+				</p>
+			</div>
 
-			<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
-			<label class="btn btn-outline-primary" for="choix3">30 %</label>
+			<div class="choix">
+				<div>
+					<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
+					<label class="btn btn-outline-primary" for="choix1">20 %</label>
+				</div>
+				<div>
+					<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
+					<label class="btn btn-outline-primary" for="choix2">50 %</label>
+				</div>
+				<div>
+					<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
+					<label class="btn btn-outline-primary" for="choix3">30 %</label>
+				</div>
+				<div>
+					<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
+					<label class="btn btn-outline-primary" for="choix4">10 %</label>
+				</div>
+			</div>
 
-			<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
-			<label class="btn btn-outline-primary" for="choix4">10 %</label>
-		</div>
+			<div class="bouton">
+				<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
+				<input type="submit" value="Suivant" class="btn btn-primary">						
+			</div>
+		</form>
 	</div>
 </div>
 
-  <script src="assets/jquery/jquery.min.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.js"></script>
-  <script src="assets/jquery.easing/jquery.easing.min.js"></script>
+
+	<!--Modal Annulation quiz-->
+	<div id="quitQuiz" class="modal fade">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Quitter la Quiz en cours ...</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Vous voulez arrêter et retourner à la page d'accueil ?</p> ?</p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Annuler">
+						<button class="btn btn-danger"><a href="../index.html">Quitter</a></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+  <script src="../assets/jquery/jquery.min.js"></script>
+  <script src="../assets/bootstrap/js/bootstrap.js"></script>
+  <script src="../assets/jquery.easing/jquery.easing.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </body>
 </html>

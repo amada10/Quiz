@@ -64,6 +64,7 @@
 							<h2><b>Modification</b></h2>
 						</div>
 						<div class="col-xs-6">
+							<a href="#editsQuiz" class="btn btn-warning" data-toggle="modal"><span>Modifier quiz</span></a>
 							<a href="#addNewQuiz" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Ajouter new quiz</span></a>
 							<a href="#deleteQuiz" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete Quiz</span></a>						
 						</div>
@@ -226,6 +227,41 @@
 						<div class="form-group">
 							<label>Enoncé</label>
 							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Question</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Réponses</label>
+							<textarea class="form-control" required></textarea>
+						</div>					
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-info" value="Modifier">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!--Edits quiz-->
+	<div id="editsQuiz" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Modifier Quiz</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group selection">
+							<label>Enoncé</label>
+							<select class="form-select form-select-lg mb-3" aria-label="Default select example">
+								<option value="1">Enonce 1</option>
+								<option value="2">Enonce 2</option>
+								<option value="3">Enonce 3</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label>Question</label>
@@ -486,7 +522,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-					<button type="button" class="btn btn-primary"><a href="../home.html">Deconnecter</a></button>
+					<button type="button" class="btn btn-primary"><a href="../index.html">Deconnecter</a></button>
 				</div>
 			</div>
 		</div>
