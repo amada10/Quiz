@@ -1,6 +1,6 @@
 <?php
 class ControllersAdd {
-    public function Users(string $nom, string $prenom, string $email, string $mdp) {
+    public function users(string $nom, string $prenom, string $email, string $mdp) {
         $infos = [
             'nom' => strip_tags($nom),
             'prenom' => strip_tags(ucwords($prenom)),
@@ -31,7 +31,7 @@ class ControllersAdd {
         unset($add);
     }
 
-    public function choix(string $identifiant, array $choix, string $etat) {
+    public function choix(string $identifiant, array $choix) {
         if(count($choix) > 0){
             $add = new Choix();
             foreach($choix as $data):

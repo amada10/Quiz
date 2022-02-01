@@ -86,7 +86,27 @@ try {
                 break;
 
                 case 'add':
-                    
+                    if(!empty(trim($url[1]))) {
+                        $add = new ControllersAdd();
+                        switch($url[2]) {
+                            case 'users':
+                                $add -> users($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['keyword']);
+                            break;
+                            case 'groupe-questions':
+                                $add -> groupeQuest($_POST['enonce']);
+                            break;
+                            case 'questions':
+                                $add -> questions($_POST['id_groupeQuest'], $_POST['enonce']);
+                            break;
+
+                            case 'choix':
+                                $add -> choix($_POST['id_question'], $_POST['choix']);
+                            break;
+                            default: throw new Exception("Erreur: URL n'existe pas !", http_response_code(1));    
+                        }
+                        unset($add);
+                    }
+                    else throw new Exception("Erreur: demande invalide !", http_response_code(1));
                 break;
 
                 case 'update':
