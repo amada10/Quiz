@@ -264,4 +264,16 @@
 		color: white;
 		text-decoration: none;
 	}
-	
+	.selection{
+		display: flex;
+		flex-direction: column;
+	}
+	.selection select{
+		height: 35px;
+	}
+
+	.selection select option{
+		overflow: hidden;
+		display: flex;
+		flex-wrap: wrap;
+	}

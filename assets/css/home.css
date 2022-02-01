@@ -39,7 +39,7 @@
 }
 
 .content-right{
-	/*background: url("../img/boite.gif") fixed no-repeat 700px 110px;*/
+	background: url("../img/boite.gif") fixed no-repeat 700px 110px;
 	background-size: inherit;
 	flex: 4;
 	background-color: #97dcdf;

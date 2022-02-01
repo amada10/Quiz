@@ -46,13 +46,13 @@
 					</div>
 					<div class="content content-right ">
 						<div>
-							<button class="bouton-admin" data-toggle="modal" data-target="#addNewQuiz"><i class="fas fa-user-shield" title="Admin section"></i></button>
+							<button class="bouton-admin" data-toggle="modal" data-target="#loginAdmin"><i class="fas fa-user-shield" title="Admin section"></i></button>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div id="addNewQuiz" class="modal fade">
+			<div id="loginAdmin" class="modal fade">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header border-bottom-0">
@@ -67,12 +67,12 @@
 							<div class="d-flex flex-column text-center">
 								<form>
 									<div class="form-group">
-										<input type="email" class="form-control" id="email1"placeholder="Pseudo admin...">
+										<input type="email" class="form-control" id="pseudo"placeholder="Pseudo admin...">
 									</div>
 									<div class="form-group">
-										<input type="password" class="form-control" id="password1" placeholder="Password admin...">
+										<input type="password" class="form-control" id="password" placeholder="Password admin...">
 									</div>
-									<button type="button" class="btn btn-info btn-block btn-round"><a href="views/admin.html" style="color: white; text-decorationo: none;">Login</a></button>
+									<button type="button" class="btn btn-info btn-block btn-round" id="logAdmin">Login</button>
 								</form>
 							</div>
 						</div>
@@ -94,12 +94,12 @@
 								<p>Veuillez mentionner votre nom avant de commencer !</p>
 								<img src="assets/img/banniere.gif" alt="banniere">
 								<div class="form-group">
-									<input type="text" class="form-control" id="email1"placeholder="Votre prénom...">
+									<input type="text" class="form-control" id="prenomUser"placeholder="Votre prénom...">
 								</div>
 							</div>
 							<div class="modal-footer">
 								<input type="button" class="btn btn-default" data-dismiss="modal" value="Annuler">
-								<a href="views/quiz.html" class="btn btn-primary">Commencer</a>
+								<button class="btn btn-primary" id="logUser">Commencer</button>
 							</div>
 						</form>
 					</div>
@@ -112,8 +112,34 @@
 			<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js" crossorigin="anonymous" integrity=""></script>
 
 			<script>
-				var app = new Vue({
+				$(document).ready(function(){
+					$('#logAdmin').click(function(e){
+						e.preventDefault();
+						let donnees = {
+							identifiant: $('#pseudo').val(),
+							keyword: $('#password').val()
+						};
+						$.post('./api/index.php?demande=login/session-login', donnees, function(data, status){
+							if(status == "success" && data[0].TRUE == '1') {
+								window.location.replace('views/admin.html');
+							}
+							else{
+								alert("Vous n'êtes pas administrateur");
+							}
+						})
+					});
 
+					$('#logUser').click(function(e){
+						e.preventDefault();
+						let donnees = {
+							prenom: $('#prenomUser').val()
+						};
+						$.post('./api/index.php?demande=add/users', donnees, function(data, status){
+							if(status == "success"){
+								console.log(data);
+							}
+						})
+					})
 				});
 			</script>
 		</body>
