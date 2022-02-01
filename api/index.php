@@ -16,13 +16,13 @@ try {
             switch($url[0]) {
                 case 'login':
                     if(!empty(trim($url[1]))) {
-                        // $login = new ControllersLogin($_POST['identifiant'], $_POST['keyword']);
-                        $login = new ControllersLogin('user1', 'dama');
+                        $login = new ControllersLogin($_POST['identifiant'], $_POST['keyword']);
                         switch($url[1]) {
+// ************************* LOGIN WITH API : /api/login/api-login
                             case 'api-login':
                                 $login -> apiLogin();
                             break;
-
+//  ************************ LOGIN WITH SESSION : /api/login/session-login
                             case 'session-login':
                                 $login -> sessionLogin();
                             break;
@@ -36,6 +36,7 @@ try {
                     if(!empty(trim($url[1]))) {
                         $get = new ControllersGet();
                         switch($url[1]) {
+// ******************************* GET ADMIN : 
                             case 'admin':
                                 $get -> admin();
                             break;
@@ -110,7 +111,7 @@ try {
                 break;
 
                 case 'update':
-                
+                    
                 break;
 
                 case 'delete':
