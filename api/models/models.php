@@ -63,7 +63,7 @@ class LoginAdmin extends Database {
             $database = Database::db_connect();
             $demande = $database -> prepare('SELECT True, ID, PSEUDO
                 FROM ADMINISTRATEUR
-                WHERE NOM = :identifiant AND MDP = SHA2(:keyword, 256)');
+                WHERE PSEUDO = :identifiant AND MDP = SHA2(:keyword, 256)');
             $demande -> execute($donnees);
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -128,7 +128,7 @@ class Utilisateur extends Database {
         try {
             $database = Database::db_connect();
             $demande = $database -> prepare('INSERT INTO UTILISATEUR (NOM, PRENOM, EMAIL, MDP)
-                VALUES(:nom, :prenom, :email, :mdp)
+                VALUES(:nom, :prenom, :email, SHA2(:mdp, 256))
             ');
             $demande -> execute($donnees);
             $database -> commit();
@@ -390,6 +390,7 @@ class Choix extends Database {
                 FROM CHOIX C
                 JOIN QUESTION Q ON C.IDQUESTION = Q.ID
                 JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
+                GROUP BY C.IDQUESTION ASC
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -412,6 +413,7 @@ class Choix extends Database {
                 JOIN QUESTION Q ON C.IDQUESTION = Q.ID
                 JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
                 WHERE C.ETAT = :identifiant
+                GROUP BY C.IDQUESTION ASC
             ');
             $demande -> execute($donnees);
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
@@ -422,6 +424,25 @@ class Choix extends Database {
             print_r(json_encode([
                 'status' => false,
                 'message' => "Erreur: nous n'avons pas pu obtenir 'Choix Tout' !".$e -> getMessage()
+            ], JSON_FORCE_OBJECT));
+        }
+        $database = null;
+    }
+
+    public function addChoix(array $donnees) {
+        try {
+            $database = Database::db_connect();
+            $demande = $database -> prepare('INSERT INTO CHOIX (IDQUESTION, CHOIX, ETAT)
+                VALUES(:id, :choix, 0)
+            ');
+            $demande -> execute($donnees);
+            $database -> commit();
+        }
+        catch(PDOException $e) {
+            $database -> rollBack();
+            print_r(json_encode([
+                'status' => false,
+                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Choix' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;

@@ -18,9 +18,8 @@ class ControllersLogin {
 
     public function sessionLogin() {
         $login = new LoginAdmin();
-        $resultats = $login -> authentifierAdmin($this -> data);
+        $_SESSION['infos'] = $login -> authentifierAdmin($this -> data);
         unset($login);
-        $_SESSION['infos'] = $resultats;
-        print_r(json_encode($resultats, JSON_FORCE_OBJECT));
+        print_r(json_encode($_SESSION['infos'], JSON_FORCE_OBJECT));
     }
 }
