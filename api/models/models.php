@@ -63,7 +63,7 @@ class LoginAdmin extends Database {
             $database = Database::db_connect();
             $demande = $database -> prepare('SELECT True, ID, NOM
                 FROM ADMINISTRATEUR
-                WHERE NOM = :nom AND MDP = SHA2(:keyword, 256)');
+                WHERE NOM = :identifiant AND MDP = SHA2(:keyword, 256)');
             $demande -> execute($donnees);
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -107,7 +107,9 @@ class Users extends Database {
             $database = Database::db_connect();
             $demande = $database -> prepare('SELECT ID, NOM, PRENOM, EMAIL, SCORE
                 FROM USERS
-                WHERE ID = :identitifiant OR PRENOM = :identifiant OR EMAIL = :identifiant
+                WHERE ID = :identitifiant 
+                OR (PRENOM = :identifiant OR SOUNDEX(:identifiant) = SOUNDEX(PRENOM))
+                OR (EMAIL = :identifiant OR SOUNDEX(:identifiant) = SOUNDEX(EMAIL))
             ');
             $demande -> execute($donnees);
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
