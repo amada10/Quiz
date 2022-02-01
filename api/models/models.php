@@ -390,7 +390,6 @@ class Choix extends Database {
                 FROM CHOIX C
                 JOIN QUESTION Q ON C.IDQUESTION = Q.ID
                 JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
-                GROUP BY C.IDQUESTION ASC
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
