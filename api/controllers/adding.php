@@ -1,6 +1,6 @@
 <?php
 class ControllersAdd {
-    public function users(string $nom, string $prenom, string $email, string $mdp) {
+    public function users(string $prenom, string $nom = "", string $email = "", string $mdp = "") {
         $infos = [
             'nom' => strip_tags($nom),
             'prenom' => strip_tags(ucwords($prenom)),
@@ -10,6 +10,7 @@ class ControllersAdd {
         $add = new Utilisateur();
         $add -> addUsers($infos);
         unset($add);
+        echo '1';
     }
 
     public function groupeQuest(string $enonce) {
@@ -19,6 +20,7 @@ class ControllersAdd {
         $add = new GroupeQuest();
         $add -> addGroupeQuest($infos);
         unset($add);
+        echo '1';
     }
 
     public function questions(string $identifiant, string $enonce) {
@@ -29,6 +31,7 @@ class ControllersAdd {
         $add = new Question();
         $add -> addQuestions($infos);
         unset($add);
+        echo '1';
     }
 
     public function choix(string $identifiant, array $choix) {
@@ -37,11 +40,12 @@ class ControllersAdd {
             foreach($choix as $data):
                 $infos = [
                     'id' => strip_tags($identifiant),
-                    'choix' => strip_tags($choix)
+                    'choix' => strip_tags($data)
                 ];
                 $add -> addChoix($infos);
             endforeach;
             unset($add);
+            echo '1';
         }
     }
 }

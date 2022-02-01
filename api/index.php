@@ -16,8 +16,7 @@ try {
             switch($url[0]) {
                 case 'login':
                     if(!empty(trim($url[1]))) {
-                        // $login = new ControllersLogin($_POST['identifiant'], $_POST['keyword']);
-                        $login = new ControllersLogin('user1', 'dama');
+                        $login = new ControllersLogin($_POST['identifiant'], $_POST['keyword']);
                         switch($url[1]) {
                             case 'api-login':
                                 $login -> apiLogin();
