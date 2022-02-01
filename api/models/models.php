@@ -1,10 +1,10 @@
 <?php
 // *************************** CONNECTION À LA BASE DE DONNÉES ***************************
 abstract class Database {
-    private $host = process.env.HOST;
-    private $database = process.env.DB_NAME;
-    private $user = process.env.DB_USER;
-    private $password = process.env.DB_PASSWORD;
+    private $host = 'localhost';
+    private $database = 'quiz';
+    private $user = 'jitiy';
+    private $password = '01Lah_tr*@ro0t/*';
 
     protected function db_connect():object {
         try {
@@ -21,11 +21,11 @@ abstract class Database {
     }
 }
 
-class Admin extends Database {
+class Administrateur extends Database {
     public function getAdmin():array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> query('SELECT ID, NOM FROM ADMINISTRATEUR');
+            $demande = $database -> query('SELECT ID, PSEUDO FROM ADMINISTRATEUR');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
             return $reponses;
@@ -43,7 +43,7 @@ class Admin extends Database {
         try {
             $database = Database::db_connect();
             $demande = $database -> prepare('UPDATE ADMINISTRATEUR
-                SET NOM = :nom, MDP = SHA2(:keyword, 256)
+                SET PSEUDO = :nom, MDP = SHA2(:keyword, 256)
             ');
             $demande -> execute($donnees);
             $database -> commit();
@@ -61,7 +61,7 @@ class LoginAdmin extends Database {
     public function authentifierAdmin(array $donnees):array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('SELECT True, ID, NOM
+            $demande = $database -> prepare('SELECT True, ID, PSEUDO
                 FROM ADMINISTRATEUR
                 WHERE NOM = :identifiant AND MDP = SHA2(:keyword, 256)');
             $demande -> execute($donnees);
@@ -80,13 +80,13 @@ class LoginAdmin extends Database {
     }
 }
 
-class Users extends Database {
+class Utilisateur extends Database {
     // ******************** PRENDRE TOUS LES USERS ****************************
     public function getAllUsers():array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> query('SELECT ID, NOM, PRENOM, EMAIL, SCORE
-                FROM USERS
+            $demande = $database -> query('SELECT ID, NOM, PRENOM, EMAIL
+                FROM UTILISATEUR
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -95,7 +95,7 @@ class Users extends Database {
         catch(PDOException $e) {
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu obtenir 'Users Tout' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Utilisateur Tout' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -105,10 +105,9 @@ class Users extends Database {
     public function getUsers(array $donnees):array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('SELECT ID, NOM, PRENOM, EMAIL, SCORE
-                FROM USERS
-                WHERE ID = :identitifiant 
-                OR (PRENOM = :identifiant OR SOUNDEX(:identifiant) = SOUNDEX(PRENOM))
+            $demande = $database -> prepare('SELECT ID, NOM, PRENOM, EMAIL
+                FROM UTILISATEUR
+                WHERE ID = :identifiant 
                 OR (EMAIL = :identifiant OR SOUNDEX(:identifiant) = SOUNDEX(EMAIL))
             ');
             $demande -> execute($donnees);
@@ -119,7 +118,7 @@ class Users extends Database {
         catch(PDOException $e) {
             print_r(json_encode([
                 'status' => false,
-                'message' => "Nous n'avons pas pu obtenir 'Users' !".$e -> getMessage()
+                'message' => "Nous n'avons pas pu obtenir 'Utilisateur' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -128,8 +127,8 @@ class Users extends Database {
     public function addUsers(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('INSERT INTO USERS (NOM, PRENOM, EMAIL)
-                VALUES(:nom, :prenom, :email)
+            $demande = $database -> prepare('INSERT INTO UTILISATEUR (NOM, PRENOM, EMAIL, MDP)
+                VALUES(:nom, :prenom, :email, :mdp)
             ');
             $demande -> execute($donnees);
             $database -> commit();
@@ -138,7 +137,7 @@ class Users extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Users' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Utilisateur' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -147,8 +146,8 @@ class Users extends Database {
     public function updateUsers(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('UPDATE USERS 
-                SET SCORE = :score
+            $demande = $database -> prepare('UPDATE UTILISATEUR
+                SET NOM = :nom, PRENOM = :prenom, EMAIL = :email, MDP = SHA2(:keyword, 256)
                 WHERE ID = :identifiant
             ');
             $demande -> execute($donnees);
@@ -158,7 +157,7 @@ class Users extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu mettre à jours 'Users' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu mettre à jours 'Utilisateur' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -167,7 +166,7 @@ class Users extends Database {
     public function deleteUsers(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('DELETE FROM USERS WHERE ID = :identifiant');
+            $demande = $database -> prepare('DELETE FROM UTILISATEUR WHERE ID = :identifiant');
             $demande -> execute($donnees);
             $database -> commit();
         }
@@ -182,13 +181,13 @@ class Users extends Database {
     }
 }
 
-class Descriptions extends Database {
+class GroupeQuest extends Database {
     // ************************* PRENDRE TOUTES LES DESCRIPTIONS **************************
-    public function getAllDescriptions():array {
+    public function getAllGroupeQuest():array {
         try {
             $database = Database::db_connect();
             $demande = $database -> query('SELECT ID, ENONCE
-                FROM DESCRIPTIONS
+                FROM GROUPEQUEST
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -197,17 +196,17 @@ class Descriptions extends Database {
         catch(PDOException $e) {
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu obtenir 'Descriptions Tout' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu obtenir 'GroupeQuest Tout' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 
-    public function getDescriptions(array $donnees):array {
+    public function getGroupeQuest(array $donnees):array {
         try {
             $database = Database::db_connect();
             $demande = $database -> prepare('SELECT ID, ENONCE
-                FROM DESCRIPTIONS
+                FROM GROUPEQUEST
                 WHERE ID = :identifiant
             ');
             $demande -> execute($donnees);
@@ -218,16 +217,16 @@ class Descriptions extends Database {
         catch(PDOException $e) {
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu obtenir 'Descriptions' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu obtenir 'GroupeQuest' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 
-    public function addDescriptions(array $donnees) {
+    public function addGroupeQuest(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('INSERT INTO DESCRIPTIONS(ENONCE)
+            $demande = $database -> prepare('INSERT INTO GROUPEQUEST(ENONCE)
                 VALUES(:enonce)
             ');
             $demande -> execute($donnees);
@@ -237,16 +236,16 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Descriptions' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu ajouter dans 'GroupeQuest' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 
-    public function updateDescriptions(array $donnees) {
+    public function updateGroupeQuest(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('UPDATE DESCRIPTIONS
+            $demande = $database -> prepare('UPDATE GROUPEQUEST
                 SET ENONCE = :enonce
                 WHERE ID = :identifiant
             ');
@@ -257,16 +256,16 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu mettre à jour 'Descriptions' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu mettre à jour 'GroupeQuest' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 
-    public function deleteDescriptions(array $donnees) {
+    public function deleteGroupeQuest(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('DELETE FROM DESCRIPTIONS WHERE ID = :identifiant');
+            $demande = $database -> prepare('DELETE FROM GROUPEQUEST WHERE ID = :identifiant');
             $demande -> execute($donnees);
             $database -> commit();
         }
@@ -274,7 +273,7 @@ class Descriptions extends Database {
             $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu supprimer 'Descriptions' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu supprimer 'GroupeQuest' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
@@ -282,11 +281,13 @@ class Descriptions extends Database {
 }
 
 class Question extends Database {
+
     public function getAllQuestions():array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> query('SELECT ID, ENONCE
-                FROM QUESTION
+            $demande = $database -> query('SELECT Q.ID, G.ENONCE AS ENONCE_GROUPEQUEST, Q.ENONCE AS ENONCE_QUESTION 
+                FROM QUESTION Q
+                JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -304,9 +305,10 @@ class Question extends Database {
     public function getQuestions(array $donnees): array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('SELECT ID, ENONCE
-                FROM QUESTION
-                WHERE ID = :identifiant
+            $demande = $database -> prepare('SELECT Q.ID, G.ENONCE AS ENONCE_GROUPEQUEST, Q.ENONCE AS ENONCE_QUESTION 
+            FROM QUESTION Q
+            JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
+            WHERE G.ID = :identifiant
             ');
             $demande -> execute($donnees);
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
@@ -325,8 +327,8 @@ class Question extends Database {
     public function addQuestions(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('INSERT INTO QUESTION(ENONCE)
-                VALUES(:enonce)
+            $demande = $database -> prepare('INSERT INTO QUESTION(IDGROUPEQUEST, ENONCE)
+                VALUES(:id, :enonce)
             ');
             $demande -> execute($donnees);
             $database -> commit();
@@ -345,7 +347,7 @@ class Question extends Database {
         try {
             $database = Database::db_connect();
             $demande = $database -> prepare('UPDATE QUESTION 
-                SET ENONCE = :enonce 
+                SET IDGROUPEQUEST = :id, ENONCE = :enonce 
                 WHERE ID = :identifiant
             ');
             $demande -> execute($donnees);
@@ -379,14 +381,15 @@ class Question extends Database {
     }
 }
 
-class Reponse extends Database {
+class Choix extends Database {
 
-    public function getAllReponses():array {
+    public function getAllChoix() {
         try {
             $database = Database::db_connect();
-            $demande = $database -> query('SELECT R.ID, R.REPONSE, R.ID_QUESTION, Q.ENONCE
-                FROM REPONSE R
-                JOIN QUESTION Q ON R.ID_QUESTION = Q.ID
+            $demande = $database -> query('SELECT C.ID, G.ENONCE AS ENONCE_GROUPEQUEST, C.IDQUESTION, Q.ENONCE AS ENONCE_QUESTION, C.CHOIX, C.ETAT
+                FROM CHOIX C
+                JOIN QUESTION Q ON C.IDQUESTION = Q.ID
+                JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
             ');
             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
             $demande -> closeCursor();
@@ -395,82 +398,138 @@ class Reponse extends Database {
         catch(PDOException $e) {
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse Tout' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Choix Tout' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 
-    public function getReponses(array $donnees):array {
+    public function getByEtatChoix(array $donnees) {
         try {
             $database = Database::db_connect();
-            $demande = $database -> prepare('SELECT R.ID, R.REPONSE, R.ID_QUESTION, Q.ENONCE
-                FROM REPONSE R
-                JOIN QUESTION Q ON R.ID_QUESTION = Q.ID
-                WHERE Q.ID = :identifiant
-            ');
-        }
-        catch(PDOException $e) {
-            print_r(json_encode([
-                'status' => false,
-                'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse' !".$e -> getMessage()
-            ], JSON_FORCE_OBJECT));
-        }
-        $database = null;
-    }
-
-    public function addReponses(array $donnees) {
-        try {
-            $database = Database::db_connect();
-            $demande = $database -> prepare('INSERT INTO REPONSE (REPONSE, ID_QUESTION)
-                VALUES(:reponse, :identifiant)
+            $demande = $database -> prepare('SELECT C.ID, G.ENONCE AS ENONCE_GROUPEQUEST, C.IDQUESTION, Q.ENONCE AS ENONCE_QUESTION, C.CHOIX, C.ETAT
+                FROM CHOIX C
+                JOIN QUESTION Q ON C.IDQUESTION = Q.ID
+                JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
+                WHERE C.ETAT = :identifiant
             ');
             $demande -> execute($donnees);
-            $database -> commit();
+            $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
+            $demande -> closeCursor();
+            return $reponses;
         }
         catch(PDOException $e) {
-            $database -> rollBack();
             print_r(json_encode([
                 'status' => false,
-                'message' => "Erreur: nous n'avons pas pu ajouter dans 'Reponse' !".$e -> getMessage()
-            ], JSON_FORCE_OBJECT));
-        }
-        $database = null;
-    }
-
-    public function updataReponses(array $donnees) {
-        try {
-            $database = Database::db_connect();
-            $demande = $database -> prepare('UPDATE REPONSE 
-                SET REPONSE = :reponse, ID_QUESTION = :identifiant
-            ');
-            $demande -> execute($donnees);
-            $database -> commit();
-        }
-        catch(PDOException $e) {
-            $database -> rollBack();
-            print_r(json_encode([
-                'status' => false,
-                'message' => "Erreur: nous n'avons pas pu mettre à jour 'Reponse' !".$e -> getMessage()
-            ], JSON_FORCE_OBJECT));
-        }
-        $database = null;
-    }
-
-    public function deleteReponses(array $donnees) {
-        try {
-            $database = Database::db_connect();
-            $demande = $database -> prepare('DELETE FROM REPONSE WHERE ID = :identifiant');
-            $demande -> execute($donnees);
-            $database -> commit();
-        }
-        catch(PDOException $e) {
-            $database -> rollBack();
-            print_r(json_encode([
-                'status' => false,
-                'message' => "Erreur: nous n'avons pas pu supprimer 'Reponse' !".$e -> getMessage()
+                'message' => "Erreur: nous n'avons pas pu obtenir 'Choix Tout' !".$e -> getMessage()
             ], JSON_FORCE_OBJECT));
         }
         $database = null;
     }
 }
+
+// class Reponse extends Database {
+
+//     public function getAllReponses():array {
+//         try {
+//             $database = Database::db_connect();
+//             $demande = $database -> query('SELECT R.ID, R.IDUTILISATEUR, U.NOM, 
+//                     U.PRENOM, U.EMAIL, R.IDCHOIX, C.IDQUESTION, 
+//                     Q.IDGOUPEQUEST, G.NOM, G.ENONCE, Q.ENONCE, C.CHOIX, C.ETAT
+//                 FROM REPONSE R
+//                 JOIN UTILISATEUR U ON R.IDUTILISATEUR = U.ID
+//                 JOIN CHOIX C ON R.IDCHOIX = C.ID
+//                 JOIN QUESTION Q ON C.IDQUESTION = Q.ID
+//                 JOIN GROUPEQUEST G ON Q.GROUPEQUEST = G.ID 
+//             ');
+//             $reponses = $demande -> fetchAll(PDO::FETCH_ASSOC);
+//             $demande -> closeCursor();
+//             return $reponses;
+//         }
+//         catch(PDOException $e) {
+//             print_r(json_encode([
+//                 'status' => false,
+//                 'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse Tout' !".$e -> getMessage()
+//             ], JSON_FORCE_OBJECT));
+//         }
+//         $database = null;
+//     }
+
+//     public function getReponses(array $donnees):array {
+//         try {
+//             $database = Database::db_connect();
+//             $demande = $database -> prepare('SELECT R.ID, R.IDUTILISATEUR, U.NOM, 
+//                     U.PRENOM, U.EMAIL, R.IDCHOIX, C.IDQUESTION, 
+//                     Q.IDGOUPEQUEST, G.NOM, G.ENONCE, Q.ENONCE, C.CHOIX, C.ETAT
+//                 FROM REPONSE R
+//                 JOIN UTILISATEUR U ON R.IDUTILISATEUR = U.ID
+//                 JOIN CHOIX C ON R.IDCHOIX = C.ID
+//                 JOIN QUESTION Q ON C.IDQUESTION = Q.ID
+//                 JOIN GROUPEQUEST G ON Q.GROUPEQUEST = G.ID
+//                 WHERE Q.ID = :identifiant
+//             ');
+//         }
+//         catch(PDOException $e) {
+//             print_r(json_encode([
+//                 'status' => false,
+//                 'message' => "Erreur: nous n'avons pas pu obtenir 'Reponse' !".$e -> getMessage()
+//             ], JSON_FORCE_OBJECT));
+//         }
+//         $database = null;
+//     }
+
+//     public function addReponses(array $donnees) {
+//         try {
+//             $database = Database::db_connect();
+//             $demande = $database -> prepare('INSERT INTO REPONSE (IDUTILISATEUR, IDCHOIX)
+//                 VALUES(:id_utilisateur, :id_choix)
+//             ');
+//             $demande -> execute($donnees);
+//             $database -> commit();
+//         }
+//         catch(PDOException $e) {
+//             $database -> rollBack();
+//             print_r(json_encode([
+//                 'status' => false,
+//                 'message' => "Erreur: nous n'avons pas pu ajouter dans 'Reponse' !".$e -> getMessage()
+//             ], JSON_FORCE_OBJECT));
+//         }
+//         $database = null;
+//     }
+
+//     public function updataReponses(array $donnees) {
+//         try {
+//             $database = Database::db_connect();
+//             $demande = $database -> prepare('UPDATE REPONSE 
+//                 SET REPONSE = :reponse, ID_QUESTION = :identifiant
+//             ');
+//             $demande -> execute($donnees);
+//             $database -> commit();
+//         }
+//         catch(PDOException $e) {
+//             $database -> rollBack();
+//             print_r(json_encode([
+//                 'status' => false,
+//                 'message' => "Erreur: nous n'avons pas pu mettre à jour 'Reponse' !".$e -> getMessage()
+//             ], JSON_FORCE_OBJECT));
+//         }
+//         $database = null;
+//     }
+
+//     public function deleteReponses(array $donnees) {
+//         try {
+//             $database = Database::db_connect();
+//             $demande = $database -> prepare('DELETE FROM REPONSE WHERE ID = :identifiant');
+//             $demande -> execute($donnees);
+//             $database -> commit();
+//         }
+//         catch(PDOException $e) {
+//             $database -> rollBack();
+//             print_r(json_encode([
+//                 'status' => false,
+//                 'message' => "Erreur: nous n'avons pas pu supprimer 'Reponse' !".$e -> getMessage()
+//             ], JSON_FORCE_OBJECT));
+//         }
+//         $database = null;
+//     }
+// }
