@@ -8,3 +8,5 @@
 - ### Prendre la liste des choix: 
     - *http(s)://**nom_domaine**/api/index.php?demande=get/choix/.*
     - *http(s)://**nom_domaine**/api/index.php?demande=get/choix/**0 | 1***
+- ### LOGIN 
+    -*http(s)://**nom_domaine**/api/index.php?demande=get/login/api-login*
