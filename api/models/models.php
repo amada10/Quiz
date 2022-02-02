@@ -306,7 +306,7 @@ class Question extends Database {
     public function getAllQuestions():array {
         try {
             $database = Database::db_connect();
-            $demande = $database -> query('SELECT Q.ID, Q.ENONCE AS ENONCE_QUESTION, Q.IDGROUPEQUEST, G.ENONCE AS ENONCE_GROUPEQUEST,
+            $demande = $database -> query('SELECT Q.ID, Q.ENONCE AS ENONCE_QUESTION, Q.IDGROUPEQUEST, G.ENONCE AS ENONCE_GROUPEQUEST
                 FROM QUESTION Q
                 JOIN GROUPEQUEST G ON Q.IDGROUPEQUEST = G.ID
             ');
