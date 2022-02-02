@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -79,6 +80,14 @@ try {
                                 }
                                 else throw new Exception("Erreur: paramètre incomplètre 'get choix' !", http_response_code(1));
                             break;
+                            case 'reponse':
+                                if(trim($url[2]) !== '') {
+                                    if($url[2] == '.') $get -> allReponses();
+                                    // elseif($url[2] == '1') $get -> choixByEtat(1);
+                                    else throw new Exception("Erreur: votre demande REPONSE n'existe pas", http_response_code(1));
+                                }
+                                else throw new Exception("Erreur: paramètre incomplètre 'get REPONSE' !", http_response_code(1));
+                            break;
                             default: throw new Exception("Erreur: paramètre invalide !", http_response_code(1));    
                         }
                         unset($get);
@@ -89,9 +98,9 @@ try {
                 case 'add':
                     if(!empty(trim($url[1]))) {
                         $add = new ControllersAdd();
-                        switch($url[2]) {
+                        switch($url[1]) {
                             case 'users':
-                                $add -> users($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['keyword']);
+                                $add -> users($_POST['prenom']);
                             break;
                             case 'groupe-questions':
                                 $add -> groupeQuest($_POST['enonce']);

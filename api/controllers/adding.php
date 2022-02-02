@@ -1,15 +1,20 @@
 <?php
 class ControllersAdd {
-    public function users(string $prenom, string $nom = "", string $email = "", string $mdp = "") {
+    public function users(string $prenom) {
         $infos = [
-            'nom' => strip_tags($nom),
-            'prenom' => strip_tags(ucwords($prenom)),
-            'email' => strip_tags($email),
-            'mdp' => $mdp
+            'prenom' => strip_tags($prenom)
         ];
-        $add = new Utilisateur();
-        $add -> addUsers($infos);
-        unset($add);
+        $login = new LoginUser();
+        $verif = $login -> authentifierUser($infos);
+        if($verif['TRUE'] != '1'){
+            $add = new Utilisateur();
+            $add -> addUsers($infos);
+            unset($add);
+            $verif = $login -> authentifierUser($infos);
+            $_SESSION['user'] = $verif;
+        }
+        else $_SESSION['user'] = $verif;
+        unset($login);
         echo '1';
     }
 

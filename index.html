@@ -120,13 +120,14 @@
 							keyword: $('#password').val()
 						};
 						$.post('./api/index.php?demande=login/session-login', donnees, function(data, status){
-							if(status == "success" && data[0].TRUE == '1') {
-								window.location.replace('views/admin.html');
+							if(status == "success" && data.TRUE == '1') {
+								window.location.href = 'views/admin.html';
+								console.log(data);
 							}
 							else{
 								alert("Vous n'êtes pas administrateur");
 							}
-						})
+						});
 					});
 
 					$('#logUser').click(function(e){
@@ -134,12 +135,15 @@
 						let donnees = {
 							prenom: $('#prenomUser').val()
 						};
-						$.post('./api/index.php?demande=add/users', donnees, function(data, status){
-							if(status == "success"){
-								console.log(data);
+						$.post('./api/index.php?demande=add/users', donnees, function(data, status) {
+							if(status == "success") {
+								window.location.replace('views/quiz.html');
 							}
-						})
-					})
+							else {
+								alert("Erreur !");
+							}
+						});
+					});
 				});
 			</script>
 		</body>

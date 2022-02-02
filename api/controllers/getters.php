@@ -75,12 +75,12 @@ class ControllersGet {
         print_r(json_encode($resultats, JSON_FORCE_OBJECT));
     }
 
-    // public function allReponses() {
-    //     $get = new Reponse();
-    //     $resultats = $get -> getAllReponses();
-    //     unset($get);
-    //     print_r(json_encode($resultats, JSON_FORCE_OBJECT));
-    // }
+    public function allReponses() {
+        $get = new Reponse();
+        $resultats = $get -> getAllReponses();
+        unset($get);
+        print_r(json_encode($resultats, JSON_FORCE_OBJECT));
+    }
 
     // public function reponses(string $identifiant) {
     //     $infos = [

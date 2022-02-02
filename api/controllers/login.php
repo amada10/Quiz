@@ -1,5 +1,4 @@
 <?php
-session_start();
 class ControllersLogin {
     private array $data;
     public function __construct(string $identifiant, string $keyword) {
