@@ -21,42 +21,42 @@
 <div class="conteneur" id="quiz">
 	<div class="principal">
 		<form method="" action="">
-			<div>
+			<div v-for="enonce in enonce">
 				<h2 class="num_question">
-					<b>Question n° 1</b>
+					<b>Enonce {{ enonce.ID }}</b>
 				</h2>
-
 				<div class="enonce">
 					<p>
-						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime vero nemo a eveniet atque 
-						dolorem recusandae, odio porro, assumenda eos modi eligendi repudiandae odit fugiat explicabo 
-						uga ab temporibus quibusdam.
+						{{ enonce.ENONCE }}
 					</p>
 				</div>
 
-				<div class="choix">
-					<div>
-						<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
-						<label class="btn btn-outline-primary" for="choix1">20 %</label>
-					</div>
-					<div>
-						<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
-						<label class="btn btn-outline-primary" for="choix2">50 %</label>
-					</div>
-					<div>
-						<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
-						<label class="btn btn-outline-primary" for="choix3">30 %</label>
-					</div>
-					<div>
-						<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
-						<label class="btn btn-outline-primary" for="choix4">10 %</label>
+				<div class="choix" v-for="question in question">
+					<div v-if="enonce.ID == question.IDGROUPEQUEST">
+							<p>{{ question.ID }}- {{ question.ENONCE_QUESTION }}  </p>
+							<div>
+								<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
+								<label class="btn btn-outline-primary" for="choix1">20 %</label>
+							</div>
+							<div>
+								<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
+								<label class="btn btn-outline-primary" for="choix2">50 %</label>
+							</div>
+							<div>
+								<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
+								<label class="btn btn-outline-primary" for="choix3">30 %</label>
+							</div>
+							<div>
+								<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
+								<label class="btn btn-outline-primary" for="choix4">10 %</label>
+							</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="bouton">
-					<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
-					<input type="submit" value="Suivant" class="btn btn-primary">						
-				</div>
+			<div class="bouton">
+				<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
+				<input type="submit" value="Suivant" class="btn btn-primary">						
 			</div>
 		</form>
 	</div>
@@ -114,13 +114,13 @@
 				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/groupe-questions/.');
 				const data = await res.json();
 				this.enonce = data;
-				console.log(this.enonce[0]);
+				console.log(this.enonce);
 			},
 			async getAllQuestion(){
 				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/questions/.');
 				const data = await res.json();
 				this.question = data;
-				console.log(this.question[0]);
+				console.log(this.question);
 			}
 		  }
 	  })
