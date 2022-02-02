@@ -292,9 +292,7 @@
 						<div class="form-group selection">
 							<label>Enoncé</label>
 							<select class="form-select form-select-lg mb-3" aria-label="Default select example">
-								<option value="1">Enonce 1</option>
-								<option value="2">Enonce 2</option>
-								<option value="3">Enonce 3</option>
+									<option v-for="enonce in enonce" v-bind:value="enonce.ENONCE">{{ enonce.ENONCE }}</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -401,16 +399,32 @@
 					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/choix/.');
 					const data = await res.json();
 					this.quiz = data;
-					console.log(this.quiz);
 				},
 				async getUser(){
 					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/users/.');
 					const data = await res.json();
 					this.user = data;
-					console.log(this.user[0]);
 				}
 			}
 		})
+
+		var app2 = new Vue({
+			el: '#editsQuiz',
+			data: {
+				enonce: null
+			},
+			beforeMount(){
+				this.getAllEnonce();
+			},
+			methods: {
+				async getAllEnonce(){
+					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/groupe-questions/.');
+					const data = await res.json();
+					this.enonce = data;
+					console.log(this.enonce[0]);
+				}
+			}
+		});
 	</script>
 </body>
 </html>
