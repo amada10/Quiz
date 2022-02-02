@@ -34,21 +34,11 @@
 				<div class="choix" v-for="question in question">
 					<div v-if="enonce.ID == question.IDGROUPEQUEST">
 							<p>{{ question.ID }}- {{ question.ENONCE_QUESTION }}  </p>
-							<div>
-								<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
-								<label class="btn btn-outline-primary" for="choix1">20 %</label>
-							</div>
-							<div>
-								<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
-								<label class="btn btn-outline-primary" for="choix2">50 %</label>
-							</div>
-							<div>
-								<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
-								<label class="btn btn-outline-primary" for="choix3">30 %</label>
-							</div>
-							<div>
-								<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
-								<label class="btn btn-outline-primary" for="choix4">10 %</label>
+							<div v-for="reponse in reponse">
+								<div v-if="question.ID == reponse.IDQUESTION">
+									<input type="radio" class="btn-check" v-bind:name="reponse.IDQUESTION" v-bind:value="reponse.CHOIX" v-bind:id="reponse.ID" autocomplete="off" checked>
+									<label class="btn btn-outline-primary" v-bind:for="reponse.ID">{{ reponse.CHOIX }}</label>
+								</div>
 							</div>
 					</div>
 				</div>
