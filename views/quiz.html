@@ -46,7 +46,7 @@
 
 			<div class="bouton">
 				<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
-				<input type="submit" value="Suivant" class="btn btn-primary">						
+				<button class="btn btn-primary"><a href="score.html">Valider</a></button>
 			</div>
 		</form>
 	</div>
@@ -81,7 +81,7 @@
 
 
   <script>
-	  var quiz = new Vue({
+	var quiz = new Vue({
 		  el: '#quiz',
 		  data: {
 			reponse: null,
@@ -98,23 +98,21 @@
 				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/choix/.');
 				const data = await res.json();
 				this.reponse = data;
-				console.log(this.reponse);
 			},
 			async getAllEnonce(){
 				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/groupe-questions/.');
 				const data = await res.json();
 				this.enonce = data;
-				console.log(this.enonce);
 			},
 			async getAllQuestion(){
 				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/questions/.');
 				const data = await res.json();
 				this.question = data;
-				console.log(this.question);
 			}
 		  }
-	  })
+	});
 	  
+
   </script>
 </body>
 </html>

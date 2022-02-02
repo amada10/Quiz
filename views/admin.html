@@ -140,36 +140,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td >Lore</td>
-								<td>thomashardy@mail.com</td>
-								<td>89 Chiaroscuro Rd, Portland, USA</td>
-								<td>20 %</td>
+							<tr v-for="quiz in quiz">
+								<td >{{ quiz.ENONCE_GROUPEQUEST }}</td>
+								<td>{{ quiz.ENONCE_QUESTION }}</td>
+								<td v-if="quiz.ETAT == '1'">{{ quiz.CHOIX }}</td>
+								<td> 10 %</td>
 							</tr>
-							<tr>
-								<td>Dominique Perrier</td>
-								<td>dominiqueperrier@mail.com</td>
-								<td>Obere Str. 57, Berlin, Germany</td>
-								<td>30 %</td>
-							</tr>
-							<tr>
-								<td>Maria Anders</td>
-								<td>mariaanders@mail.com</td>
-								<td>25, rue Lauriston, Paris, France</td>
-								<td>50 %</td>
-							</tr>
-							<tr>	
-								<td>Fran Wilson</td>
-								<td>franwilson@mail.com</td>
-								<td>C/ Araquil, 67, Madrid, Spain</td>
-								<td>10 %</td>
-							</tr>					
-							<tr>
-								<td>Martin Blank</td>
-								<td>martinblank@mail.com</td>
-								<td>Via Monte Bianco 34, Turin, Italy</td>
-								<td>70 %</td>
-							</tr> 
 						</tbody>
 					</table>
 					<div class="clearfix">
@@ -413,14 +389,15 @@
 			el: '#modifQuiz',
 			data: {
 				quiz: null,
-				user: null
+				user: null,
+				taux: null
 			},
 			beforeMount(){
-				this.getAllQuiz();
+				this.getAllReponse();
 				this.getUser();
 			},
 			methods: {
-				async getAllQuiz(){
+				async getAllReponse(){
 					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/choix/.');
 					const data = await res.json();
 					this.quiz = data;
