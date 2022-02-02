@@ -18,43 +18,45 @@
 </head>
 <body>
 
-<div class="conteneur">
+<div class="conteneur" id="quiz">
 	<div class="principal">
 		<form method="" action="">
-			<h2 class="num_question">
-				<b>Question n° 1</b>
-			</h2>
+			<div>
+				<h2 class="num_question">
+					<b>Question n° 1</b>
+				</h2>
 
-			<div class="enonce">
-				<p>
-					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime vero nemo a eveniet atque 
-					dolorem recusandae, odio porro, assumenda eos modi eligendi repudiandae odit fugiat explicabo 
-					uga ab temporibus quibusdam.
-				</p>
-			</div>
+				<div class="enonce">
+					<p>
+						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime vero nemo a eveniet atque 
+						dolorem recusandae, odio porro, assumenda eos modi eligendi repudiandae odit fugiat explicabo 
+						uga ab temporibus quibusdam.
+					</p>
+				</div>
 
-			<div class="choix">
-				<div>
-					<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
-					<label class="btn btn-outline-primary" for="choix1">20 %</label>
+				<div class="choix">
+					<div>
+						<input type="radio" class="btn-check" name="choix" value="20%" id="choix1" autocomplete="off" checked>
+						<label class="btn btn-outline-primary" for="choix1">20 %</label>
+					</div>
+					<div>
+						<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
+						<label class="btn btn-outline-primary" for="choix2">50 %</label>
+					</div>
+					<div>
+						<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
+						<label class="btn btn-outline-primary" for="choix3">30 %</label>
+					</div>
+					<div>
+						<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
+						<label class="btn btn-outline-primary" for="choix4">10 %</label>
+					</div>
 				</div>
-				<div>
-					<input type="radio" class="btn-check" name="choix" value="50%" id="choix2" autocomplete="off">
-					<label class="btn btn-outline-primary" for="choix2">50 %</label>
-				</div>
-				<div>
-					<input type="radio" class="btn-check" name="choix" value="30%" id="choix3" autocomplete="off">
-					<label class="btn btn-outline-primary" for="choix3">30 %</label>
-				</div>
-				<div>
-					<input type="radio" class="btn-check" name="choix" value="10%" id="choix4" autocomplete="off">
-					<label class="btn btn-outline-primary" for="choix4">10 %</label>
-				</div>
-			</div>
 
-			<div class="bouton">
-				<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
-				<input type="submit" value="Suivant" class="btn btn-primary">						
+				<div class="bouton">
+					<a href="#quitQuiz" class="btn btn-danger" data-toggle="modal"> <span>Delete Quiz</span></a>
+					<input type="submit" value="Suivant" class="btn btn-primary">						
+				</div>
 			</div>
 		</form>
 	</div>
@@ -85,6 +87,44 @@
   <script src="../assets/jquery/jquery.min.js"></script>
   <script src="../assets/bootstrap/js/bootstrap.js"></script>
   <script src="../assets/jquery.easing/jquery.easing.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js" crossorigin="anonymous" integrity=""></script>
+
+
+  <script>
+	  var quiz = new Vue({
+		  el: '#quiz',
+		  data: {
+			reponse: null,
+			enonce: null,
+			question: null
+		  },
+		  beforeMount(){
+			  this.getAllReponse();
+			  this.getAllEnonce();
+			  this.getAllQuestion();
+		  },
+		  methods: {
+			async getAllReponse(){
+				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/choix/.');
+				const data = await res.json();
+				this.reponse = data;
+				console.log(this.reponse);
+			},
+			async getAllEnonce(){
+				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/groupe-questions/.');
+				const data = await res.json();
+				this.enonce = data;
+				console.log(this.enonce[0]);
+			},
+			async getAllQuestion(){
+				const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/questions/.');
+				const data = await res.json();
+				this.question = data;
+				console.log(this.question[0]);
+			}
+		  }
+	  })
+	  
+  </script>
 </body>
 </html>

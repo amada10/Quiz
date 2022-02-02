@@ -3,8 +3,8 @@
 abstract class Database {
     private $host = 'localhost';
     private $database = 'quiz';
-    private $user = 'jitiy';
-    private $password = '01Lah_tr*@ro0t/*';
+    private $user = 'root';
+    private $password = '';
 
     protected function db_connect():object {
         try {

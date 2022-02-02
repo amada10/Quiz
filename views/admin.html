@@ -424,6 +424,7 @@
 					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/choix/.');
 					const data = await res.json();
 					this.quiz = data;
+					console.log(this.quiz);
 				},
 				async getUser(){
 					const res = await fetch('http://localhost/myPratique/quiz/api/index.php?demande=get/users/.');
